@@ -1,0 +1,12 @@
+{
+  "editor.formatOnSave": true,
+  "eslint.autoFixOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": true,
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": true,
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": true,
+  "javascript.format.semicolons": "insert",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
