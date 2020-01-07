@@ -1,6 +1,6 @@
 import React from "react";
 
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, FormControl } from "@material-ui/core";
 
 import GridContainer from "components/Grid/GridContainer";
 import GridItem from "components/Grid/GridItem";
@@ -23,6 +23,7 @@ import Close from "@material-ui/icons/Close";
 import Assignment from "@material-ui/icons/Assignment";
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.js";
 
+import Select from "react-select";
 // core components
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
@@ -33,14 +34,101 @@ import SupplyListTableContainer from "containers/DirectPurchase/SupplyListTableC
 import styles from "assets/jss/material-dashboard-pro-react/views/validationFormsStyle.js";
 
 const useStyles = makeStyles(styles);
-function SupplyCreateFormContainer(props) {
+
+export default function SupplyCreateFormContainer(props) {
   const classes = useStyles();
 
   return (
     <form>
       <GridContainer>
+        <GridItem xs={12} sm={3}>
+          <FormLabel className={classes.labelHorizontal}>샵 이름</FormLabel>
+        </GridItem>
+        <GridItem xs={12} sm={9}>
+          <CustomInput
+            // success={minLengthState === "success"}
+            // error={minLengthState === "error"}
+            id="shop_name"
+            formControlProps={{
+              fullWidth: true
+            }}
+            inputProps={{
+              onChange: event => {
+                // if (verifyLength(event.target.value, 5)) {
+                //   setminLengthState("success");
+                // } else {
+                //   setminLengthState("error");
+                // }
+                // setminLength(event.target.value);
+              },
+              type: "text"
+              // endAdornment:
+              //   minLengthState === "error" ? (
+              //     <InputAdornment position="end">
+              //       <Close className={classes.danger} />
+              //     </InputAdornment>
+              //   ) : (
+              //     undefined
+              //   )
+            }}
+          />
+        </GridItem>
+
+        <GridItem xs={12} sm={3}>
+          <FormLabel className={classes.labelHorizontal}>세부</FormLabel>
+        </GridItem>
+        <GridItem xs={12} sm={9}>
+          <CustomInput
+            // success={minLengthState === "success"}
+            // error={minLengthState === "error"}
+            id="detail"
+            formControlProps={{
+              fullWidth: true
+            }}
+            inputProps={{
+              onChange: event => {
+                // if (verifyLength(event.target.value, 5)) {
+                //   setminLengthState("success");
+                // } else {
+                //   setminLengthState("error");
+                // }
+                // setminLength(event.target.value);
+              },
+              type: "text"
+              // endAdornment:
+              //   minLengthState === "error" ? (
+              //     <InputAdornment position="end">
+              //       <Close className={classes.danger} />
+              //     </InputAdornment>
+              //   ) : (
+              //     undefined
+              //   )
+            }}
+          />
+        </GridItem>
+
+        <GridItem xs={12} sm={3}>
+          <FormLabel className={classes.labelHorizontal}>국가</FormLabel>
+        </GridItem>
+        <GridItem xs={12} sm={7}>
+          <FormControl>
+            <Select
+              className="basic-single"
+              classNamePrefix="select"
+              // defaultValue={colourOptions[0]}
+              // isDisabled={isDisabled}
+              // isLoading={isLoading}
+              // isClearable={isClearable}
+              // isRtl={isRtl}
+              // isSearchable={isSearchable}
+              // name="color"
+              // options={colourOptions}
+            />
+          </FormControl>
+        </GridItem>
+
         <GridItem xs={12} sm={2}>
-          <FormLabel className={classes.labelHorizontal}>Min Length</FormLabel>
+          <FormLabel className={classes.labelHorizontal}>샵 이름</FormLabel>
         </GridItem>
         <GridItem xs={12} sm={7}>
           <CustomInput

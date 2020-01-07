@@ -30,6 +30,8 @@ import CardText from "components/Card/CardText.js";
 import CardFooter from "components/Card/CardFooter.js";
 
 import SupplyListTableContainer from "containers/DirectPurchase/SupplyListTableContainer";
+import SupplyCreateFormContainer from "containers/DirectPurchase/SupplyCreateFormContainer";
+
 import ValidationFormstyles from "assets/jss/material-dashboard-pro-react/views/validationFormsStyle.js";
 
 const styles = {
@@ -54,7 +56,9 @@ export default function SupplyCreatePage(props) {
               </CardIcon>
               <h4 className={classes.cardIconTitle}>공급처 추가</h4>
             </CardHeader>
-            <CardBody></CardBody>
+            <CardBody>
+              <SupplyCreateFormContainer />
+            </CardBody>
           </Card>
         </GridItem>
       </GridContainer>
