@@ -161,8 +161,6 @@ class Sidebar extends React.Component {
             [classes.collapseItemMiniRTL]: rtlActive
           });
         if (prop.isSidebar) {
-          console.log("ABC")
-          console.log(prop)
           return (
             <ListItem
               key={key}
