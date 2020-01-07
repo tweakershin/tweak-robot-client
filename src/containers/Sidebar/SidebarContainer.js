@@ -68,15 +68,26 @@ export default function SidebarContainer(props) {
 
   console.log("SidebarContainer");
 
-  const sidebarRoutes = routes.filter((prop, idx) => {
-    if (prop.isSidebar) {
-      return prop;
-    }
-  });
+  // sidebar에 보여줄 것 확인
+  // 재귀적으로 호출함
+  // const filterViewSidebar = routes => {
+  //   const newRoutes = routes.map((prop, idx) => {
+  //     if (prop.views) {
+  //       const newViews = filterViewSidebar(prop.views);
+  //     }
+  //     if (prop.isSidebar) {
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   });
+  //   return newRoutes;
+  // };
+  // const sidebarRoutes = filterViewSidebar(routes);
 
   return (
     <Sidebar
-      routes={sidebarRoutes}
+      routes={routes}
       logoText={"Creative Tim"}
       logo={reduxState.logo}
       image={reduxState.sidebarImage}

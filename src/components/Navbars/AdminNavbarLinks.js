@@ -74,7 +74,7 @@ export default function HeaderLinks(props) {
         history.push("/auth/login");
       }
     );
-  }, [dispatch, reduxState.authInfo]);
+  }, [dispatch, reduxState.authInfo, history]);
 
   // const handleLogout = () => {
   //   setOpenProfile(null);

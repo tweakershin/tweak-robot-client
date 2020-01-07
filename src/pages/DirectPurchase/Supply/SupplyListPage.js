@@ -1,5 +1,7 @@
 import React from "react";
 
+import PropTypes from "prop-types";
+
 import { makeStyles } from "@material-ui/core";
 
 import GridContainer from "components/Grid/GridContainer";
@@ -12,6 +14,8 @@ import CardIcon from "components/Card/CardIcon";
 import Assignment from "@material-ui/icons/Assignment";
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.js";
 import ReactTable from "react-table";
+
+import CustomButton from "components/CustomButtons/Button";
 
 import SupplyListTableContainer from "containers/DirectPurchase/SupplyListTableContainer";
 
@@ -26,6 +30,17 @@ const styles = {
 const useStyles = makeStyles(styles);
 export default function SupplyListPage(props) {
   const classes = useStyles();
+
+  const handleCreateButton = React.useCallback(() => {
+    console.log(props);
+    console.log("A");
+    return props.history.push("/admin/direct-purchase/supply/create");
+  }, [props]);
+  const handleRemoveButton = React.useCallback(() => {
+    console.log(props);
+    console.log("B");
+  }, [props]);
+
   return (
     <div>
       <GridContainer>
@@ -38,7 +53,25 @@ export default function SupplyListPage(props) {
               <h4 className={classes.cardIconTitle}>공급처 리스트</h4>
             </CardHeader>
             <CardBody>
-              <SupplyListTableContainer />
+              <div>
+                <CustomButton
+                  color="danger"
+                  size="md"
+                  style={{ float: "right" }}
+                  onClick={handleRemoveButton}
+                >
+                  <strong>샵 삭제</strong>
+                </CustomButton>
+                <CustomButton
+                  color="primary"
+                  size="md"
+                  style={{ float: "right" }}
+                  onClick={handleCreateButton}
+                >
+                  <strong>샵 추가</strong>
+                </CustomButton>
+              </div>
+              <SupplyListTableContainer {...props} />
             </CardBody>
           </Card>
         </GridItem>
@@ -46,3 +79,7 @@ export default function SupplyListPage(props) {
     </div>
   );
 }
+
+SupplyListPage.propTypes = {
+  history: PropTypes.object
+};

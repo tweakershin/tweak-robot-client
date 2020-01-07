@@ -1,13 +1,13 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import MaterialReactTable from "components/Table/MaterialReactTable";
-import CustomButton from "components/CustomButtons/Button";
 
 import classNames from "classnames";
 
 // sample Data Import
 
-export default function SupplyListTable(props) {
+export default function SupplyListTableContainer(props) {
   const columns = React.useMemo(
     () => [
       {
@@ -71,9 +71,7 @@ export default function SupplyListTable(props) {
   return (
     <div>
       {/* <div onClick={e => changeCheckbox(!hasCheckbox)}>체크박스삭제</div> */}
-      <CustomButton color="primary" size="lg" simple block>
-        as
-      </CustomButton>
+
       <MaterialReactTable
         data={usedData}
         columns={columns}
@@ -84,3 +82,7 @@ export default function SupplyListTable(props) {
     </div>
   );
 }
+
+SupplyListTableContainer.propTypes = {
+  history: PropTypes.object
+};

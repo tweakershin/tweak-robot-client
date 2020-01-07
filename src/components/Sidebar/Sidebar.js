@@ -160,58 +160,62 @@ class Sidebar extends React.Component {
           cx({
             [classes.collapseItemMiniRTL]: rtlActive
           });
-        return (
-          <ListItem
-            key={key}
-            className={cx(
-              { [classes.item]: prop.icon !== undefined },
-              { [classes.collapseItem]: prop.icon === undefined }
-            )}
-          >
-            <NavLink
-              to={"#"}
-              className={navLinkClasses}
-              onClick={e => {
-                e.preventDefault();
-                this.setState(st);
-              }}
-            >
-              {prop.icon !== undefined ? (
-                typeof prop.icon === "string" ? (
-                  <Icon className={itemIcon}>{prop.icon}</Icon>
-                ) : (
-                  <prop.icon className={itemIcon} />
-                )
-              ) : (
-                <span className={collapseItemMini}>
-                  {rtlActive ? prop.rtlMini : prop.mini}
-                </span>
+        if (prop.isSidebar) {
+          console.log("ABC")
+          console.log(prop)
+          return (
+            <ListItem
+              key={key}
+              className={cx(
+                { [classes.item]: prop.icon !== undefined },
+                { [classes.collapseItem]: prop.icon === undefined }
               )}
-              <ListItemText
-                primary={rtlActive ? prop.rtlName : prop.name}
-                secondary={
-                  <b
-                    className={
-                      caret +
-                      " " +
-                      (this.state[prop.state] ? classes.caretActive : "")
-                    }
-                  />
-                }
-                disableTypography={true}
-                className={cx(
-                  { [itemText]: prop.icon !== undefined },
-                  { [collapseItemText]: prop.icon === undefined }
+            >
+              <NavLink
+                to={"#"}
+                className={navLinkClasses}
+                onClick={e => {
+                  e.preventDefault();
+                  this.setState(st);
+                }}
+              >
+                {prop.icon !== undefined ? (
+                  typeof prop.icon === "string" ? (
+                    <Icon className={itemIcon}>{prop.icon}</Icon>
+                  ) : (
+                    <prop.icon className={itemIcon} />
+                  )
+                ) : (
+                  <span className={collapseItemMini}>
+                    {rtlActive ? prop.rtlMini : prop.mini}
+                  </span>
                 )}
-              />
-            </NavLink>
-            <Collapse in={this.state[prop.state]} unmountOnExit>
-              <List className={classes.list + " " + classes.collapseList}>
-                {this.createLinks(prop.views)}
-              </List>
-            </Collapse>
-          </ListItem>
-        );
+                <ListItemText
+                  primary={rtlActive ? prop.rtlName : prop.name}
+                  secondary={
+                    <b
+                      className={
+                        caret +
+                        " " +
+                        (this.state[prop.state] ? classes.caretActive : "")
+                      }
+                    />
+                  }
+                  disableTypography={true}
+                  className={cx(
+                    { [itemText]: prop.icon !== undefined },
+                    { [collapseItemText]: prop.icon === undefined }
+                  )}
+                />
+              </NavLink>
+              <Collapse in={this.state[prop.state]} unmountOnExit>
+                <List className={classes.list + " " + classes.collapseList}>
+                  {this.createLinks(prop.views)}
+                </List>
+              </Collapse>
+            </ListItem>
+          );
+        }
       }
       const innerNavLinkClasses =
         classes.collapseItemLink +
@@ -257,43 +261,47 @@ class Sidebar extends React.Component {
         cx({
           [classes.itemIconRTL]: rtlActive
         });
-      return (
-        <ListItem
-          key={key}
-          className={cx(
-            { [classes.item]: prop.icon !== undefined },
-            { [classes.collapseItem]: prop.icon === undefined }
-          )}
-        >
-          <NavLink
-            to={prop.layout + prop.path}
-            className={cx(
-              { [navLinkClasses]: prop.icon !== undefined },
-              { [innerNavLinkClasses]: prop.icon === undefined }
-            )}
+      if (prop.isSidebar) {
+      
+        return (
+
+          <ListItem
+            key={ key }
+            className={ cx(
+              { [ classes.item ]: prop.icon !== undefined },
+              { [ classes.collapseItem ]: prop.icon === undefined }
+            ) }
           >
-            {prop.icon !== undefined ? (
-              typeof prop.icon === "string" ? (
-                <Icon className={itemIcon}>{prop.icon}</Icon>
+            <NavLink
+              to={ prop.layout + prop.path }
+              className={ cx(
+                { [ navLinkClasses ]: prop.icon !== undefined },
+                { [ innerNavLinkClasses ]: prop.icon === undefined }
+              ) }
+            >
+              { prop.icon !== undefined ? (
+                typeof prop.icon === "string" ? (
+                  <Icon className={ itemIcon }>{ prop.icon }</Icon>
+                ) : (
+                    <prop.icon className={ itemIcon } />
+                  )
               ) : (
-                <prop.icon className={itemIcon} />
-              )
-            ) : (
-              <span className={collapseItemMini}>
-                {rtlActive ? prop.rtlMini : prop.mini}
-              </span>
-            )}
-            <ListItemText
-              primary={rtlActive ? prop.rtlName : prop.name}
-              disableTypography={true}
-              className={cx(
-                { [itemText]: prop.icon !== undefined },
-                { [collapseItemText]: prop.icon === undefined }
-              )}
-            />
-          </NavLink>
-        </ListItem>
-      );
+                  <span className={ collapseItemMini }>
+                    { rtlActive ? prop.rtlMini : prop.mini }
+                  </span>
+                ) }
+              <ListItemText
+                primary={ rtlActive ? prop.rtlName : prop.name }
+                disableTypography={ true }
+                className={ cx(
+                  { [ itemText ]: prop.icon !== undefined },
+                  { [ collapseItemText ]: prop.icon === undefined }
+                ) }
+              />
+            </NavLink>
+          </ListItem>
+        );
+      }
     });
   };
   render() {

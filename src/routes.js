@@ -48,6 +48,7 @@ import StoreIcon from "@material-ui/icons/Store";
 
 import SupplyListPage from "pages/DirectPurchase/Supply/SupplyListPage";
 import LoginPage from "pages/Auth/LoginPage";
+import SupplyCreatePage from "pages/DirectPurchase/Supply/SupplyCreatePage";
 
 let dashRoutes = [
   // Auth
@@ -88,12 +89,24 @@ let dashRoutes = [
     isSidebar: true,
     views: [
       {
-        path: "/direct-purchase/supply",
+        path: "/direct-purchase/supply/list",
         name: "공급",
         rtlName: "공급",
         mini: "SP",
         component: SupplyListPage,
-        layout: "/admin"
+        layout: "/admin",
+        exact: true,
+        isSidebar: true
+      },
+      {
+        path: "/direct-purchase/supply/create",
+        name: "공급샵 추가",
+        rtlName: "공급샵 추가",
+        mini: "SPC",
+        component: SupplyCreatePage,
+        layout: "/admin",
+        exact: true,
+        isSidebar: false
       },
       {
         path: "/direct-purchase/control",
@@ -101,7 +114,9 @@ let dashRoutes = [
         rtlName: "운영",
         mini: "CN",
         component: Dashboard,
-        layout: "/admin"
+        layout: "/admin",
+        exact: true,
+        isSidebar: true
       },
       {
         path: "/direct-purchase/sales",
@@ -109,7 +124,9 @@ let dashRoutes = [
         rtlName: "판매",
         mini: "SL",
         component: Dashboard,
-        layout: "/admin"
+        layout: "/admin",
+        exact: true,
+        isSidebar: true
       }
     ]
   }
