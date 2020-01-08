@@ -4,6 +4,8 @@ import queryString from "query-string";
 // 로그인은 defaultClient사용 안함.
 // import axios from "@services/defaultClient";
 
+import Storage from "storage";
+
 const isDev = process.env.NODE_ENV === "development";
 
 const BASE_URL = isDev ? "http://localhost:8000" : "http://15.164.186.13";
@@ -34,6 +36,9 @@ export const login = async (username, password) => {
     .then(resp => {
       const authInfo = resp.data;
       console.log(resp);
+
+      Storage.set("authInfo", authInfo);
+
       return authInfo;
     })
     .catch(e => {
@@ -49,6 +54,8 @@ export const logout = accessToken => {
     client_id: CLIENT_ID,
     client_secret: CLIENT_SECRET
   };
+
+  Storage.remove("authInfo");
 
   return axios
     .post(LOGOUT_URL, queryString.stringify(requestBody), authConfig)

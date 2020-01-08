@@ -9,6 +9,23 @@ import { login, logout } from "services/auth";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import { persistReducer } from "redux-persist";
 
+import Storage from "storage";
+
+const getAuthInfo = () => {
+  let authInfo = Storage.get("authInfo");
+
+  if (!authInfo) {
+    authInfo = {
+      access_token: "",
+      expires_in: 0,
+      refresh_token: "",
+      scope: "",
+      token_type: ""
+    };
+  }
+  return authInfo;
+};
+
 /***** 1. INITIAL_STATE *****/
 const initialState = {
   /*** NETWORK ***/
@@ -17,13 +34,7 @@ const initialState = {
 
   /*** CONTROL ***/
   logined: false,
-  authInfo: {
-    access_token: "",
-    expires_in: 0,
-    refresh_token: "",
-    scope: "",
-    token_type: ""
-  }
+  authInfo: getAuthInfo()
 };
 
 /***** 2. ACTION_TYPE *****/
@@ -58,7 +69,9 @@ const serverLogout = createAction(SERVER_LOGOUT, logout);
 const feLogin = createAction(FE_LOGIN, authInfo => authInfo);
 
 // // state에 있는 유저 정보를 제거
-const feLogout = createAction(FE_LOGOUT, () => {});
+const feLogout = createAction(FE_LOGOUT, () => {
+  Storage.remove("authInfo");
+});
 
 /*** TOTAL ***/
 export const actionCreators = {
@@ -162,7 +175,10 @@ const authPersistConfig = {
   storage: storage,
 
   // 두개만 persist
-  whitelist: ["authInfo", "logined"]
+  whitelist: [
+    // "authInfo",
+    "logined"
+  ]
 };
 
 const authReducer = persistReducer(authPersistConfig, reducer);
