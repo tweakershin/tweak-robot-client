@@ -70,7 +70,6 @@ export default function HeaderLinks(props) {
   const handleLogout = React.useCallback(() => {
     dispatch(AuthActions.serverLogout(reduxState.authInfo.access_token)).then(
       action => {
-        console.log(action);
         history.push("/auth/login");
       }
     );

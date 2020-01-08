@@ -44,7 +44,9 @@ export default function SupplyCreateFormContainer(props) {
   const [shopGroupOptions, setShopGroupOptions] = React.useState([]);
 
   const getShopGroup = React.useEffect(() => {
-    fetchSupplyGroup();
+    fetchSupplyGroup().then(data => {
+      setShopGroupOptions(data);
+    });
     console.log("getshopGroup");
   }, []);
   // const getShopGroup = React.useEffect(async () => {
@@ -78,6 +80,36 @@ export default function SupplyCreateFormContainer(props) {
                 isSearchable={true}
                 // name="color"
                 // options={colourOptions}
+                creatable
+                inputProps={{
+                  onInputChange: e => {
+                    console.log("onInputChange");
+                    console.log("onInputChange2");
+                  },
+                  onChange: e => {
+                    console.log("onChange");
+                    console.log("onChange2");
+                  },
+                  onCreateOption: e => {
+                    console.log("onCreate");
+                  },
+                  options: [
+                    { value: "AL", label: "Alabama" },
+                    { value: "AK", label: "Alaska" },
+                    { value: "AS", label: "American Samoa" },
+                    { value: "AZ", label: "Arizona" },
+                    { value: "AR", label: "Arkansas" },
+                    { value: "CA", label: "California" },
+                    { value: "CO", label: "Colorado" },
+                    { value: "CT", label: "Connecticut" },
+                    { value: "DE", label: "Delaware" },
+                    { value: "DC", label: "District Of Columbia" },
+                    { value: "FM", label: "Federated States Of Micronesia" },
+                    { value: "FL", label: "Florida" },
+                    { value: "GA", label: "Georgia" }
+                  ]
+                  // value: { value: 1, label: "alb" }
+                }}
               />
             </GridItem>
 

@@ -112,8 +112,6 @@ export default function Dashboard(props) {
         return getRoutes(prop.views);
       }
       if (prop.layout === "/admin") {
-        console.log("Admin");
-        console.log(prop);
         return (
           <Route
             path={prop.layout + prop.path}

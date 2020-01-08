@@ -12,6 +12,7 @@ import Input from "@material-ui/core/Input";
 
 import styles from "assets/jss/material-dashboard-pro-react/components/customInputStyle.js";
 import Select from "react-select";
+import CreatableSelect from "react-select/creatable";
 
 const useStyles = makeStyles(styles);
 
@@ -27,7 +28,8 @@ export default function CustomSelect(props) {
     white,
     inputRootCustomClasses,
     success,
-    helperText
+    helperText,
+    creatable
   } = props;
 
   const labelClasses = classNames({
@@ -60,6 +62,19 @@ export default function CustomSelect(props) {
     [classes.labelRootError]: error,
     [classes.labelRootSuccess]: success && !error
   });
+
+  // Creatable of None Creatable
+
+  let SelectComponent;
+  if (creatable) {
+    SelectComponent = CreatableSelect;
+  } else {
+    SelectComponent = Select;
+  }
+
+  console.group("customSElect");
+  console.log(inputProps);
+  console.groupEnd();
   return (
     <FormControl {...formControlProps} className={formControlClasses}>
       {labelText !== undefined ? (
@@ -71,13 +86,14 @@ export default function CustomSelect(props) {
           {labelText}
         </InputLabel>
       ) : null}
-      <Select
+      <SelectComponent
         classes={{
           input: inputClasses,
           root: marginTop,
           disabled: classes.disabled,
           underline: underlineClasses
         }}
+        isClearable
         id={id}
         {...inputProps}
       />
@@ -90,6 +106,10 @@ export default function CustomSelect(props) {
   );
 }
 
+CustomSelect.defaultProps = {
+  creatable: false
+};
+
 CustomSelect.propTypes = {
   labelText: PropTypes.node,
   labelProps: PropTypes.object,
@@ -100,5 +120,9 @@ CustomSelect.propTypes = {
   error: PropTypes.bool,
   success: PropTypes.bool,
   white: PropTypes.bool,
-  helperText: PropTypes.node
+  helperText: PropTypes.node,
+
+  creatable: PropTypes.bool,
+  onChange: PropTypes.func,
+  onInputChange: PropTypes.func
 };

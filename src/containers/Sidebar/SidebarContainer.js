@@ -66,7 +66,7 @@ export default function SidebarContainer(props) {
   //   return <Redirect to={from} />;
   // }
 
-  console.log("SidebarContainer");
+  // console.log("SidebarContainer");
 
   // sidebar에 보여줄 것 확인
   // 재귀적으로 호출함

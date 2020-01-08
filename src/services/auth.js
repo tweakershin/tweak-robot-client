@@ -37,7 +37,7 @@ export const login = async (username, password) => {
       const authInfo = resp.data;
       console.log(resp);
 
-      Storage.set("authInfo", authInfo);
+      Storage.set("authInfo", authInfo, "local");
 
       return authInfo;
     })
