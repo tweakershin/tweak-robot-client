@@ -34,7 +34,10 @@ import CardFooter from "components/Card/CardFooter.js";
 import SupplyListTableContainer from "containers/DirectPurchase/SupplyListTableContainer";
 import styles from "assets/jss/material-dashboard-pro-react/views/validationFormsStyle.js";
 
-import { fetchSupplyGroup } from "services/directPurchase/supply";
+import {
+  fetchSupplyGroup,
+  postSupplyGroup
+} from "services/directPurchase/supply";
 
 const useStyles = makeStyles(styles);
 
@@ -42,12 +45,33 @@ export default function SupplyCreateFormContainer(props) {
   const classes = useStyles();
 
   const [shopGroupOptions, setShopGroupOptions] = React.useState([]);
+  const [shopGroupValue, setShopGroupValue] = React.useState({
+    label: "",
+    value: ""
+  });
+
+  const makeGroupSelectOptions = React.useCallback(dataArr => {
+    return dataArr.map((prop, idx) => {
+      return {
+        label: prop.name,
+        value: prop.id
+      };
+    });
+  }, []);
 
   const getShopGroup = React.useEffect(() => {
-    fetchSupplyGroup().then(data => {
+    fetchSupplyGroup().then(groupOptions => {
+      const data = makeGroupSelectOptions(groupOptions);
       setShopGroupOptions(data);
     });
     console.log("getshopGroup");
+  }, []);
+
+  const createShopGroup = React.useCallback(name => {
+    postSupplyGroup(name).then(groupOptions => {
+      const data = makeGroupSelectOptions(groupOptions);
+      setShopGroupOptions(data);
+    });
   }, []);
   // const getShopGroup = React.useEffect(async () => {
   //   console.log("GetshopGroup");
@@ -90,24 +114,10 @@ export default function SupplyCreateFormContainer(props) {
                     console.log("onChange");
                     console.log("onChange2");
                   },
-                  onCreateOption: e => {
-                    console.log("onCreate");
+                  onCreateOption: text => {
+                    createShopGroup(text);
                   },
-                  options: [
-                    { value: "AL", label: "Alabama" },
-                    { value: "AK", label: "Alaska" },
-                    { value: "AS", label: "American Samoa" },
-                    { value: "AZ", label: "Arizona" },
-                    { value: "AR", label: "Arkansas" },
-                    { value: "CA", label: "California" },
-                    { value: "CO", label: "Colorado" },
-                    { value: "CT", label: "Connecticut" },
-                    { value: "DE", label: "Delaware" },
-                    { value: "DC", label: "District Of Columbia" },
-                    { value: "FM", label: "Federated States Of Micronesia" },
-                    { value: "FL", label: "Florida" },
-                    { value: "GA", label: "Georgia" }
-                  ]
+                  options: shopGroupOptions
                   // value: { value: 1, label: "alb" }
                 }}
               />

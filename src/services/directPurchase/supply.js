@@ -12,3 +12,14 @@ export const fetchSupplyGroup = async () => {
     return data;
   });
 };
+
+export const postSupplyGroup = async shopGroupName => {
+  const requestBody = {
+    name: shopGroupName
+  };
+  return axios.post(SUPPLY_GROUP_URL, requestBody).then(resp => {
+    console.log(resp);
+    console.log(resp.data);
+    return resp.data;
+  });
+};
