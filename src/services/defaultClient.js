@@ -15,7 +15,7 @@ const axiosConfig = isDev
         Accept: "application/json"
       },
       withCredentials: false,
-      timeout: 5000
+      timeout: 10000
     }
   : {
       baseURL: "http://15.164.186.13/api/",
@@ -67,6 +67,7 @@ defaultClient.interceptors.response.use(
     // Do something with response error
 
     // console.log(error.response);
+    console.error(error);
     if (error.response.status === 401) {
       // 권한문제
       console.log(

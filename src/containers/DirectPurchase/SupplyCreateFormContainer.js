@@ -38,14 +38,30 @@ import {
   fetchSupplyGroup,
   postSupplyGroup
 } from "services/directPurchase/supply";
+import { getCountryData, getSubdivisionData } from "services/countries";
 
 const useStyles = makeStyles(styles);
 
 export default function SupplyCreateFormContainer(props) {
   const classes = useStyles();
 
+  // ShopGroupOption
   const [shopGroupOptions, setShopGroupOptions] = React.useState([]);
-  const [shopGroupValue, setShopGroupValue] = React.useState({
+  const [shopGroupOptionValue, setShopGroupOptionValue] = React.useState({
+    label: "",
+    value: ""
+  });
+
+  // CountryDataOption
+  const [countryOptions, setCountryOptions] = React.useState([]);
+  const [countryOptionValue, setCountryOptionValue] = React.useState({
+    label: "",
+    value: ""
+  });
+
+  // SubdivisionData
+  const [subDivisionOptions, setSubDvisitionOptions] = React.useState([]);
+  const [subDivisionOptionValue, setSubDivisionOptionValue] = React.useState({
     label: "",
     value: ""
   });
@@ -58,6 +74,29 @@ export default function SupplyCreateFormContainer(props) {
       };
     });
   }, []);
+
+  const makeCountryDataSelectOptions = React.useCallback(dataArr => {
+    return dataArr.map(prop => {
+      return {
+        label: prop.name,
+        en_name: prop.en_name,
+        ko_name: prop.ko_name,
+        value: prop.alpha2
+      };
+    });
+  }, []);
+
+  const makeSubdivisionDataSelectOptions = React.useCallback(dataArr => {
+    return dataArr.map(prop => {
+      return {
+        label: prop.name,
+        type: prop.type,
+        official_name: prop.official_name,
+        en_name: prop.en_name,
+        value: prop.code
+      };
+    });
+  });
 
   const getShopGroup = React.useEffect(() => {
     fetchSupplyGroup().then(groupOptions => {
@@ -73,15 +112,27 @@ export default function SupplyCreateFormContainer(props) {
       setShopGroupOptions(data);
     });
   }, []);
-  // const getShopGroup = React.useEffect(async () => {
-  //   console.log("GetshopGroup");
 
-  //   fetchSupplyGroup();
+  // Country Data
+  const fetchCountryData = React.useEffect(() => {
+    getCountryData().then(countryData => {
+      const data = makeCountryDataSelectOptions(countryData);
+      setCountryOptions(data);
+    });
+  }, []);
 
-  //   setShopGroupOptions();
-  //   // console.log(fetchSupplyGroup());
-  // }, []);
+  const fetchSubdivisionData = React.useEffect(() => {
+    getSubdivisionData(countryOptionValue.value).then(subDivisionData => {
+      const data = makeSubdivisionDataSelectOptions(subDivisionData);
+      console.log(data);
+      setSubDvisitionOptions(data);
+    });
+    console.log("AVAVVASDFS");
+  }, [countryOptionValue.value]);
 
+  console.log("p----==-==========");
+  console.log(subDivisionOptions);
+  console.log(subDivisionOptions ? true : false);
   return (
     <form>
       <GridContainer justify="center" alignItems="center">
@@ -110,15 +161,14 @@ export default function SupplyCreateFormContainer(props) {
                     console.log("onInputChange");
                     console.log("onInputChange2");
                   },
-                  onChange: e => {
-                    console.log("onChange");
-                    console.log("onChange2");
+                  onChange: optionValue => {
+                    setShopGroupOptionValue(optionValue);
                   },
                   onCreateOption: text => {
                     createShopGroup(text);
                   },
-                  options: shopGroupOptions
-                  // value: { value: 1, label: "alb" }
+                  options: shopGroupOptions,
+                  value: shopGroupOptionValue
                 }}
               />
             </GridItem>
@@ -231,6 +281,13 @@ export default function SupplyCreateFormContainer(props) {
                 formControlProps={{
                   fullWidth: true
                 }}
+                inputProps={{
+                  onChange: optionValue => {
+                    setCountryOptionValue(optionValue);
+                  },
+                  options: countryOptions,
+                  value: countryOptionValue
+                }}
                 // defaultValue={colourOptions[0]}
                 // isDisabled={isDisabled}
                 // isLoading={isLoading}
@@ -251,8 +308,15 @@ export default function SupplyCreateFormContainer(props) {
                 formControlProps={{
                   fullWidth: true
                 }}
+                inputProps={{
+                  onChange: optionValue => {
+                    setSubDivisionOptionValue(optionValue);
+                  },
+                  options: subDivisionOptions,
+                  value: subDivisionOptionValue,
+                  isDisabled: subDivisionOptions.length == 0
+                }}
                 // defaultValue={colourOptions[0]}
-                // isDisabled={isDisabled}
                 // isLoading={isLoading}
                 // isClearable={isClearable}
                 // isRtl={isRtl}

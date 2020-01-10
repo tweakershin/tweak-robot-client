@@ -72,9 +72,6 @@ export default function CustomSelect(props) {
     SelectComponent = Select;
   }
 
-  console.group("customSElect");
-  console.log(inputProps);
-  console.groupEnd();
   return (
     <FormControl {...formControlProps} className={formControlClasses}>
       {labelText !== undefined ? (
