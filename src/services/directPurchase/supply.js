@@ -1,15 +1,11 @@
 import axios from "services/defaultClient";
 
 const SUPPLY_GROUP_URL = "supply/shop-group/";
+const SUPPLY_SHOP_URL = "supply/shops/";
 
 export const fetchSupplyGroup = async () => {
   return axios.get(SUPPLY_GROUP_URL).then(resp => {
-    console.log("fetchsupply");
-    console.log(resp);
-    const data = resp.data;
-    console.log(data);
-    console.log("fetchsupply End");
-    return data;
+    return resp.data;
   });
 };
 
@@ -18,8 +14,35 @@ export const postSupplyGroup = async shopGroupName => {
     name: shopGroupName
   };
   return axios.post(SUPPLY_GROUP_URL, requestBody).then(resp => {
-    console.log(resp);
-    console.log(resp.data);
+    return resp.data;
+  });
+};
+
+export const getSupplyShop = async (page = 0) => {
+  if (page === 0) {
+    return axios.get(SUPPLY_SHOP_URL).then(resp => {
+      return resp.data;
+    });
+  }
+};
+
+export const postSupplyShop = async (
+  shopGroupId,
+  shopName,
+  shopDetail,
+  shopUrl,
+  shopCountryCode,
+  shopSubdivisionCode
+) => {
+  const requestBody = {
+    group: shopGroupId,
+    name: shopName,
+    detail: shopDetail,
+    url: shopUrl,
+    country: shopCountryCode,
+    subdivision: shopSubdivisionCode
+  };
+  return axios.post(SUPPLY_SHOP_URL, requestBody).then(resp => {
     return resp.data;
   });
 };

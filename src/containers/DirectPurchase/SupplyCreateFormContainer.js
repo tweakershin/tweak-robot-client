@@ -36,7 +36,8 @@ import styles from "assets/jss/material-dashboard-pro-react/views/validationForm
 
 import {
   fetchSupplyGroup,
-  postSupplyGroup
+  postSupplyGroup,
+  postSupplyShop
 } from "services/directPurchase/supply";
 import { getCountryData, getSubdivisionData } from "services/countries";
 
@@ -47,24 +48,24 @@ export default function SupplyCreateFormContainer(props) {
 
   // ShopGroupOption
   const [shopGroupOptions, setShopGroupOptions] = React.useState([]);
-  const [shopGroupOptionValue, setShopGroupOptionValue] = React.useState({
-    label: "",
-    value: ""
-  });
+  const [shopGroupOptionValue, setShopGroupOptionValue] = React.useState(null);
+
+  // shopName
+  const [shopName, setShopName] = React.useState("");
+  // shopDetail
+  const [shopDetail, setShopDetail] = React.useState(null);
+  // shopUrl
+  const [shopUrl, setShopUrl] = React.useState(null);
 
   // CountryDataOption
   const [countryOptions, setCountryOptions] = React.useState([]);
-  const [countryOptionValue, setCountryOptionValue] = React.useState({
-    label: "",
-    value: ""
-  });
+  const [countryOptionValue, setCountryOptionValue] = React.useState(null);
 
   // SubdivisionData
   const [subDivisionOptions, setSubDvisitionOptions] = React.useState([]);
-  const [subDivisionOptionValue, setSubDivisionOptionValue] = React.useState({
-    label: "",
-    value: ""
-  });
+  const [subDivisionOptionValue, setSubDivisionOptionValue] = React.useState(
+    null
+  );
 
   const makeGroupSelectOptions = React.useCallback(dataArr => {
     return dataArr.map((prop, idx) => {
@@ -103,7 +104,6 @@ export default function SupplyCreateFormContainer(props) {
       const data = makeGroupSelectOptions(groupOptions);
       setShopGroupOptions(data);
     });
-    console.log("getshopGroup");
   }, []);
 
   const createShopGroup = React.useCallback(name => {
@@ -122,17 +122,55 @@ export default function SupplyCreateFormContainer(props) {
   }, []);
 
   const fetchSubdivisionData = React.useEffect(() => {
-    getSubdivisionData(countryOptionValue.value).then(subDivisionData => {
-      const data = makeSubdivisionDataSelectOptions(subDivisionData);
-      console.log(data);
-      setSubDvisitionOptions(data);
-    });
-    console.log("AVAVVASDFS");
-  }, [countryOptionValue.value]);
+    if (countryOptionValue) {
+      getSubdivisionData(countryOptionValue.value).then(subDivisionData => {
+        const data = makeSubdivisionDataSelectOptions(subDivisionData);
+        console.log(data);
+        setSubDvisitionOptions(data);
+      });
+    }
+    return;
+  }, [countryOptionValue]);
 
-  console.log("p----==-==========");
-  console.log(subDivisionOptions);
-  console.log(subDivisionOptions ? true : false);
+  // 등록 버튼
+  const handleCreateButton = React.useCallback(
+    (
+      shopGroupOption,
+      shopName,
+      shopDetail,
+      shopUrl,
+      countryOption,
+      subDivisionOption
+    ) => {
+      console.log("----------");
+      const shopGroupId =
+        shopGroupOption !== null ? shopGroupOption.value : null;
+
+      const countryId = countryOption !== null ? countryOption.value : null;
+      const subDivisionId =
+        subDivisionOption !== null ? subDivisionOption.value : null;
+
+      console.log(`shopGroup: ${shopGroupId}`);
+      console.log(`shopName: ${shopName}`);
+      console.log(`shopDetail: ${shopDetail}`);
+      console.log(`shopUrl: ${shopUrl}`);
+
+      console.log(`countryOptionValue: ${countryOption}`);
+      console.log(`subDivisionOptionValue: ${subDivisionOption}`);
+      console.log("----------");
+
+      return postSupplyShop(
+        shopGroupId,
+        shopName,
+        shopDetail,
+        shopUrl,
+        countryId,
+        subDivisionId
+      );
+    },
+    []
+  );
+
   return (
     <form>
       <GridContainer justify="center" alignItems="center">
@@ -185,7 +223,13 @@ export default function SupplyCreateFormContainer(props) {
                   fullWidth: true
                 }}
                 inputProps={{
-                  onChange: event => {
+                  onChange: e => {
+                    e.preventDefault();
+                    if (e.target.value === "") {
+                      setShopName(null);
+                    } else {
+                      setShopName(e.target.value);
+                    }
                     // if (verifyLength(event.target.value, 5)) {
                     //   setminLengthState("success");
                     // } else {
@@ -213,28 +257,22 @@ export default function SupplyCreateFormContainer(props) {
               <CustomInput
                 // success={minLengthState === "success"}
                 // error={minLengthState === "error"}
-                id="detail"
+                id="shop_detail"
                 formControlProps={{
                   fullWidth: true
                 }}
                 inputProps={{
-                  onChange: event => {
-                    // if (verifyLength(event.target.value, 5)) {
-                    //   setminLengthState("success");
-                    // } else {
-                    //   setminLengthState("error");
-                    // }
-                    // setminLength(event.target.value);
+                  onChange: e => {
+                    e.preventDefault();
+                    if (e.target.value === "") {
+                      setShopDetail(null);
+                    } else {
+                      setShopDetail(e.target.value);
+                    }
+
+                    // validation code
                   },
                   type: "text"
-                  // endAdornment:
-                  //   minLengthState === "error" ? (
-                  //     <InputAdornment position="end">
-                  //       <Close className={classes.danger} />
-                  //     </InputAdornment>
-                  //   ) : (
-                  //     undefined
-                  //   )
                 }}
               />
             </GridItem>
@@ -246,28 +284,20 @@ export default function SupplyCreateFormContainer(props) {
               <CustomInput
                 // success={minLengthState === "success"}
                 // error={minLengthState === "error"}
-                id="shop_name"
+                id="shop_url"
                 formControlProps={{
                   fullWidth: true
                 }}
                 inputProps={{
-                  onChange: event => {
-                    // if (verifyLength(event.target.value, 5)) {
-                    //   setminLengthState("success");
-                    // } else {
-                    //   setminLengthState("error");
-                    // }
-                    // setminLength(event.target.value);
+                  onChange: e => {
+                    e.preventDefault();
+                    if (e.target.value === null) {
+                      setShopUrl(null);
+                    } else {
+                      setShopUrl(e.target.value);
+                    }
                   },
                   type: "text"
-                  // endAdornment:
-                  //   minLengthState === "error" ? (
-                  //     <InputAdornment position="end">
-                  //       <Close className={classes.danger} />
-                  //     </InputAdornment>
-                  //   ) : (
-                  //     undefined
-                  //   )
                 }}
               />
             </GridItem>
@@ -326,6 +356,23 @@ export default function SupplyCreateFormContainer(props) {
               />
             </GridItem>
           </GridContainer>
+          <Button
+            color="primary"
+            size="lg"
+            style={{ float: "right" }}
+            onClick={() => {
+              handleCreateButton(
+                shopGroupOptionValue,
+                shopName,
+                shopDetail,
+                shopUrl,
+                countryOptionValue,
+                subDivisionOptionValue
+              );
+            }}
+          >
+            <strong>등록</strong>
+          </Button>
         </GridItem>
       </GridContainer>
     </form>
