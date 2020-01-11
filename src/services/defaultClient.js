@@ -70,6 +70,7 @@ defaultClient.interceptors.response.use(
     console.error(error);
     if (error.response.status === 401) {
       // 권한문제
+      console.error(error);
       console.log(
         "권한문제 발생.. 로그아웃을 진행합니다. 다시 로그인 해주십시요."
       );
