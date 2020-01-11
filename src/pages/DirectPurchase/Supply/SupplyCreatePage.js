@@ -57,7 +57,7 @@ export default function SupplyCreatePage(props) {
               <h4 className={classes.cardIconTitle}>공급처 추가</h4>
             </CardHeader>
             <CardBody>
-              <SupplyCreateFormContainer />
+              <SupplyCreateFormContainer {...props} />
             </CardBody>
           </Card>
         </GridItem>

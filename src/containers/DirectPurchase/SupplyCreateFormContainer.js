@@ -51,7 +51,20 @@ export default function SupplyCreateFormContainer(props) {
   const [shopGroupOptionValue, setShopGroupOptionValue] = React.useState(null);
 
   // shopName
-  const [shopName, setShopName] = React.useState("");
+  const [shopName, setShopName] = React.useState(null);
+  const [shopNameError, setShopNameError] = React.useState(false);
+  const [shopNameHelpText, setShopNameHelpText] = React.useState("");
+
+  const shopNameValidator = React.useEffect(() => {
+    if (shopName === null) {
+      setShopNameError(true);
+      setShopNameHelpText("shopName은 반드시 존재해야 합니다.");
+    } else {
+      setShopNameError(false);
+      setShopNameHelpText("");
+    }
+  }, [shopName]);
+
   // shopDetail
   const [shopDetail, setShopDetail] = React.useState(null);
   // shopUrl
@@ -142,22 +155,12 @@ export default function SupplyCreateFormContainer(props) {
       countryOption,
       subDivisionOption
     ) => {
-      console.log("----------");
       const shopGroupId =
         shopGroupOption !== null ? shopGroupOption.value : null;
 
       const countryId = countryOption !== null ? countryOption.value : null;
       const subDivisionId =
         subDivisionOption !== null ? subDivisionOption.value : null;
-
-      console.log(`shopGroup: ${shopGroupId}`);
-      console.log(`shopName: ${shopName}`);
-      console.log(`shopDetail: ${shopDetail}`);
-      console.log(`shopUrl: ${shopUrl}`);
-
-      console.log(`countryOptionValue: ${countryOption}`);
-      console.log(`subDivisionOptionValue: ${subDivisionOption}`);
-      console.log("----------");
 
       return postSupplyShop(
         shopGroupId,
@@ -166,7 +169,15 @@ export default function SupplyCreateFormContainer(props) {
         shopUrl,
         countryId,
         subDivisionId
-      );
+      )
+        .then(data => {
+          console.log(props);
+          props.history.push("/admin/direct-purchase/supply/list");
+        })
+        .catch(err => {
+          console.error(err);
+          // const errData = err.response.data;
+        });
     },
     []
   );
@@ -181,6 +192,7 @@ export default function SupplyCreateFormContainer(props) {
             </GridItem>
             <GridItem xs={12} sm={10}>
               <CustomSelect
+                id="group"
                 classNamePrefix="select"
                 formControlProps={{
                   fullWidth: true
@@ -218,7 +230,9 @@ export default function SupplyCreateFormContainer(props) {
               <CustomInput
                 // success={minLengthState === "success"}
                 // error={minLengthState === "error"}
-                id="shop_name"
+                id="name"
+                error={shopNameError}
+                helperText={shopNameHelpText}
                 formControlProps={{
                   fullWidth: true
                 }}
@@ -257,7 +271,8 @@ export default function SupplyCreateFormContainer(props) {
               <CustomInput
                 // success={minLengthState === "success"}
                 // error={minLengthState === "error"}
-                id="shop_detail"
+                id="detail"
+                helperText={"hi"}
                 formControlProps={{
                   fullWidth: true
                 }}
@@ -284,10 +299,11 @@ export default function SupplyCreateFormContainer(props) {
               <CustomInput
                 // success={minLengthState === "success"}
                 // error={minLengthState === "error"}
-                id="shop_url"
+                id="url"
                 formControlProps={{
                   fullWidth: true
                 }}
+                helperText={""}
                 inputProps={{
                   onChange: e => {
                     e.preventDefault();
@@ -318,6 +334,7 @@ export default function SupplyCreateFormContainer(props) {
                   options: countryOptions,
                   value: countryOptionValue
                 }}
+                id="country"
                 // defaultValue={colourOptions[0]}
                 // isDisabled={isDisabled}
                 // isLoading={isLoading}
