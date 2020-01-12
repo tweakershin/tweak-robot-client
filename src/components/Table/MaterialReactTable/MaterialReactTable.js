@@ -47,7 +47,6 @@ import { useCheckbox } from "./hooks";
 
 export default function MaterialReactTable(props) {
   const { data, columns, hasCheckbox, debug } = props;
-
   const checkboxHook = React.useMemo(() => {
     // TODO: checkbox 동적으로 생성 만들기
     if (hasCheckbox) {
@@ -89,9 +88,6 @@ export default function MaterialReactTable(props) {
     //  Custom Hook
     checkboxHook
   );
-
-  console.log("restTableProps");
-  console.log(restTableProps);
 
   // console.log(pageIndex, pageSize, groupBy, expanded, filters, selectedRowIds);
   return (

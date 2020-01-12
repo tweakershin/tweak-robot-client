@@ -18,7 +18,7 @@ export const postSupplyGroup = async shopGroupName => {
   });
 };
 
-export const getSupplyShop = async (page = 0) => {
+export const getSupplyShopList = async (page = 0) => {
   if (page === 0) {
     return axios.get(SUPPLY_SHOP_URL).then(resp => {
       return resp.data;
