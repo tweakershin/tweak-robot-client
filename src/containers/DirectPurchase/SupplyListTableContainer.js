@@ -7,6 +7,8 @@ import classNames from "classnames";
 
 import { getSupplyShopList } from "services/directPurchase/supply";
 
+import Button from "components/CustomButtons/Button";
+
 // sample Data Import
 
 export default function SupplyListTableContainer(props) {
@@ -56,19 +58,69 @@ export default function SupplyListTableContainer(props) {
 
       {
         Header: "상태",
-        accessor: "robot_status"
+        accessor: d => {
+          if (d.robot !== null && d.robot !== undefined) {
+            return d.robot.status;
+          }
+          return null;
+        },
+        Cell: ({ cell }, ...data) => {
+          return <div>{cell.value}</div>;
+        }
       },
       {
         Header: "주기",
-        accessor: "robot_period"
+        accessor: d => {
+          if (d.robot !== null && d.robot !== undefined) {
+            return [d.robot.period, d.robot.period_type];
+          } else {
+            return null;
+          }
+        },
+        Cell: ({ cell }, ...data) => {
+          return <div>{cell.value}</div>;
+        }
       },
       {
         Header: "액션",
-        accessor: d => [d.name, d.detail, d.url],
-        Cell: d => {
-          console.log("---Action Cell");
-          console.log(d);
-          return <div>a</div>;
+        accessor: d => {
+          if (d.robot !== null && d.robot !== undefined) {
+            return { shop_id: d.id, ...d.robot };
+          }
+        },
+        Cell: ({ cell }, ...data) => {
+          if (cell.value === undefined || cell.value === null) {
+            return (
+              <div>
+                <Button
+                  color="danger"
+                  size="sm"
+                  onClick={e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                  }}
+                >
+                  등록
+                </Button>
+              </div>
+            );
+          }
+          return (
+            <div>
+              <Button
+                color="success"
+                size="sm"
+                onClick={e => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return false;
+                }}
+              >
+                실행
+              </Button>
+            </div>
+          );
         }
       }
     ],
@@ -96,6 +148,13 @@ export default function SupplyListTableContainer(props) {
         hasCheckbox={true}
         className={classNames("-striped", "-highlight")}
         debug={true}
+        rowOptions={{
+          clickable: true,
+          onClick: row => {
+            console.log("rowClick");
+            console.log(row);
+          }
+        }}
       />
     </div>
   );

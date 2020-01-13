@@ -51,7 +51,9 @@ export default function MaterialReactTableHead(props) {
     //     ) : null}
     <TableHead>
       {headerGroups.map((headerGroup, idx) => {
-        console.log(headerGroup.getHeaderGroupProps());
+        {
+          /* console.log(headerGroup.getHeaderGroupProps()); */
+        }
         return (
           <TableRow {...headerGroup.getHeaderGroupProps()} key={idx}>
             {headerGroup.headers.map(column => {

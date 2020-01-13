@@ -1,27 +1,36 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
+import MaterialReactTable from "./MaterialReactTable";
 
 export default function MaterialReactTableBody(props) {
   const { rows, prepareRow } = props;
+
   return (
     <TableBody>
-      {rows.map((row, i) => {
+      {rows.map(row => {
         prepareRow(row);
+
+        const { key, clickable, onClick, ...rowProps } = row.getRowProps();
         return (
-          <TableRow {...row.getRowProps()}>
-            {row.cells.map(cell => {
-              {
-                /* console.log("ABAB");
-              console.log(cell);
-              console.log(cell.getCellProps());
-              console.log(cell.render("Cell")); */
-              }
-              console.log(cell);
+          <TableRow
+            {...rowProps}
+            key={key}
+            style={clickable ? { cursor: "pointer" } : {}}
+            hover={clickable}
+            onClick={e => {
+              e.preventDefault();
+              e.stopPropagation();
+              onClick(row);
+            }}
+          >
+            {row.cells.map((cell, idx) => {
+              const cellProps = cell.getCellProps();
               return (
-                <TableCell {...cell.getCellProps()}>
+                <TableCell key={cellProps.key} {...cellProps}>
                   {cell.render("Cell")}
                 </TableCell>
               );
@@ -32,3 +41,9 @@ export default function MaterialReactTableBody(props) {
     </TableBody>
   );
 }
+
+MaterialReactTableBody.propTypes = {
+  rows: PropTypes.array,
+  prepareRow: PropTypes.func,
+  rowOptions: PropTypes.object
+};

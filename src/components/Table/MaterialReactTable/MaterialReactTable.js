@@ -43,10 +43,10 @@ import MaterialReactTableBody from "./MaterialReactTableBody";
 import MaterialReactTableRow from "./MaterialReactTableRow";
 import MaterialReactTableCell from "./MaterialReactTableCell";
 
-import { useCheckbox } from "./hooks";
+import { useCheckbox, useRowClickable } from "./hooks";
 
 export default function MaterialReactTable(props) {
-  const { data, columns, hasCheckbox, debug } = props;
+  const { data, columns, hasCheckbox, debug, rowOptions } = props;
   const checkboxHook = React.useMemo(() => {
     // TODO: checkbox 동적으로 생성 만들기
     if (hasCheckbox) {
@@ -68,7 +68,8 @@ export default function MaterialReactTable(props) {
     {
       columns,
       data,
-      debug
+      debug,
+      rowOptions
     },
     // Core Plugin Hooks
     useGroupBy,
@@ -86,7 +87,8 @@ export default function MaterialReactTable(props) {
     // useFlexLayout,
     // useResizeColumns,
     //  Custom Hook
-    checkboxHook
+    checkboxHook,
+    useRowClickable
   );
 
   // console.log(pageIndex, pageSize, groupBy, expanded, filters, selectedRowIds);
@@ -94,7 +96,11 @@ export default function MaterialReactTable(props) {
     <TableContainer {...getTableProps()}>
       <Table>
         <MaterialReactTableHead columns={columns} headerGroups={headerGroups} />
-        <MaterialReactTableBody prepareRow={prepareRow} rows={rows} />
+        <MaterialReactTableBody
+          prepareRow={prepareRow}
+          rows={rows}
+          rowOptions={rowOptions}
+        />
       </Table>
     </TableContainer>
   );
@@ -109,7 +115,8 @@ MaterialReactTable.propTypes = {
   // style
   hasCheckbox: PropTypes.bool,
   // debug
-  debug: PropTypes.bool
+  debug: PropTypes.bool,
+  rowOptions: PropTypes.object
 };
 
 MaterialReactTable.defaultProps = {
@@ -117,7 +124,11 @@ MaterialReactTable.defaultProps = {
   // style
   hasCheckbox: false,
   // debug
-  debug: false
+  debug: false,
+  rowOptions: {
+    clickable: false,
+    onClick: () => {}
+  }
 };
 
 // export default function ReactTable({
