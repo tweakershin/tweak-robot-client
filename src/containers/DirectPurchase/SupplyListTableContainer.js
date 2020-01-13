@@ -12,6 +12,7 @@ import Button from "components/CustomButtons/Button";
 // sample Data Import
 
 export default function SupplyListTableContainer(props) {
+  const { history } = props;
   const columns = React.useMemo(
     () => [
       {
@@ -153,6 +154,7 @@ export default function SupplyListTableContainer(props) {
           onClick: row => {
             console.log("rowClick");
             console.log(row);
+            history.push(`/admin/direct-purchase/supply/shop/${row.id}`);
           }
         }}
       />

@@ -49,6 +49,7 @@ import StoreIcon from "@material-ui/icons/Store";
 import SupplyListPage from "pages/DirectPurchase/Supply/SupplyListPage";
 import LoginPage from "pages/Auth/LoginPage";
 import SupplyCreatePage from "pages/DirectPurchase/Supply/SupplyCreatePage";
+import SupplyDetailPage from "pages/DirectPurchase/Supply/SupplyDetailPage";
 
 let dashRoutes = [
   // Auth
@@ -104,6 +105,15 @@ let dashRoutes = [
         rtlName: "공급샵 추가",
         mini: "SPC",
         component: SupplyCreatePage,
+        layout: "/admin",
+        exact: true,
+        isSidebar: false
+      },
+      {
+        path: "/direct-purchase/supply/shop/:id",
+        name: "공급샵",
+        rtlName: "공급샵",
+        component: SupplyDetailPage,
         layout: "/admin",
         exact: true,
         isSidebar: false
